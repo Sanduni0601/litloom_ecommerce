@@ -7,8 +7,14 @@ import {
   FaBell,
   FaRegistered
 } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
   return (
 <>
       <div className="bg-cyan-900 text-white text-sm px-4 py-2 flex justify-between">
@@ -16,7 +22,7 @@ const Header = () => {
           
         </div>
         <div className="flex gap-4">
-          <span className="flex items-center gap-1"><FaRegistered /> Register</span>
+          <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleRegisterClick}><FaRegistered /> Register</span>
           <span className="flex items-center gap-1"><FaUser /> Login</span>
         </div>
       </div>

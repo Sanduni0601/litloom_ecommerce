@@ -1,12 +1,17 @@
-//import logo from './logo.svg';
-//import './App.css';
 import Homepage from './Components/HomePage';
+import RegisterForm from './Components/RegisterForm';
+import Header from './Components/Header';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-       <Homepage/> 
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Homepage/>} />
+        <Route path="/register" element={<RegisterForm />} />
+      </Routes>
+    </Router>
   );
 }
 
