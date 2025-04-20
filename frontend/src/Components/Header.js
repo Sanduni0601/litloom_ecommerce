@@ -15,6 +15,12 @@ const Header = () => {
   const handleRegisterClick = () => {
     navigate("/register");
   };
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+  const handleLoginClick = () =>{
+    navigate("/login");
+  }
   return (
 <>
       <div className="bg-cyan-900 text-white text-sm px-4 py-2 flex justify-between">
@@ -23,7 +29,7 @@ const Header = () => {
         </div>
         <div className="flex gap-4">
           <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleRegisterClick}><FaRegistered /> Register</span>
-          <span className="flex items-center gap-1"><FaUser /> Login</span>
+          <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLoginClick}><FaUser /> Login</span>
         </div>
       </div>
 
@@ -32,7 +38,7 @@ const Header = () => {
           <span role="img" aria-label="logo">📘</span> LimLoom
         </div>
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
-          <li className="cursor-pointer hover:text-cyan-600">Home</li>
+          <li className="cursor-pointer hover:text-cyan-600 cursor-pointer hover:text-cyan-100" onClick={handleHomeClick}>Home</li>
           <li className="cursor-pointer hover:text-cyan-600">Category</li>
           <li className="cursor-pointer hover:text-cyan-600">Authors</li>
           <li className="cursor-pointer hover:text-cyan-600">Contact</li>

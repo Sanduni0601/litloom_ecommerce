@@ -99,7 +99,7 @@ const HomePage = () => {
                   <img
                     src={girl}
                     alt="Girl with book"
-                    className="w-64 md:w-80 h-auto object-contain"
+                    className="w-64 md:w-80 h-auto object-contain transition-transform duration-300 ease-in-out hover:scale-110"
                   />
                 </div>
               </div>

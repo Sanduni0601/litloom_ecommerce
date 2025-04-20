@@ -271,31 +271,6 @@ const RegisterForm = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-
-    if (formData.password !== formData.confirmPassword) {
-      setMessage("Passwords do not match.");
-      setMessageType("error");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:8080/api/reg", formData);
-      setMessage(response.data || "Registration successful!");
-      setMessageType("success");
-      setFormData({
-        fullName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        organizationName: "",
-      });
-    } catch (error) {
-      setMessage(error.response?.data || "Something went wrong.");
-      setMessageType("error");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -318,21 +293,8 @@ const RegisterForm = () => {
             <h2 className="text-3xl font-extrabold text-indigo-900 mb-1">Start Your Reading Journey</h2>
           </div>
           
-         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="fullName" className="sr-only">Full Name</label>
-              <input
-                id="fullName"
-                name="fullName"
-                type="text"
-                required
-                value={formData.fullName}
-                className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Full Name"
-                onChange={handleChange}
-              />
-            </div>
+         <form className="mt-18 space-y-8" onSubmit={handleSubmit}>
+          
             
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
@@ -363,42 +325,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
               />
             </div>
-            
-            <div>
-              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                value={formData.confirmPassword}
-                className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Confirm Password"
-                onChange={handleChange}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="organizationName" className="sr-only">Organization Name</label>
-              <input
-                id="organizationName"
-                name="organizationName"
-                type="text"
-                value={formData.organizationName}
-                className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Organization Name (Optional)"
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          {message && (
-            <div className={`rounded-md p-4 ${messageType === "success" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"}`}>
-              <p className="text-sm font-medium">{message}</p>
-            </div>
-          )}
-
+         
           <div>
             <button
               type="submit"
@@ -413,13 +340,14 @@ const RegisterForm = () => {
                   </svg>
                 </span>
               ) : null}
-              {loading ? "Registering..." : "Join LitLoom"}
+              {loading ? "Registering..." : "Log in to LitLoom"}
             </button>
           </div>
         </form>
+          
           <div className="mt-6 text-center">
             <p className="text-sm text-indigo-600">
-              Already have an account? <a href="#" className="font-medium text-indigo-800 hover:text-indigo-900 transition-colors underline">Sign in to continue reading</a>
+              Forgot password? <a href="#" className="font-medium text-indigo-800 hover:text-indigo-900 transition-colors underline">Reset your password here</a>
             </p>
           </div>
         </div>
