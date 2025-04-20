@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 const Book = ({ color, delay, position }) => {
   const bookStyle = {
     animation: `float 8s ease-in-out infinite ${delay}s, rotateBook 15s linear infinite ${delay}s`,
@@ -300,7 +301,8 @@ const RegisterForm = () => {
   };
   const navigate = useNavigate();
   return (
- 
+    <>
+ <Header/>
     <div className="min-h-screen relative overflow-hidden bg-animated flex items-center justify-center">
       <Particles />
       <FloatingText />
@@ -427,6 +429,7 @@ const RegisterForm = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

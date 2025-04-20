@@ -1,35 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FaUser,
   FaHeart,
   FaShoppingCart,
   FaSearch,
   FaBell,
-  FaRegistered
+  FaRegistered,
+  FaSignOutAlt
 } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleRegisterClick = () => {
     navigate("/register");
   };
+
   const handleHomeClick = () => {
     navigate("/");
   };
-  const handleLoginClick = () =>{
+
+  const handleLoginClick = () => {
     navigate("/login");
-  }
+  };
+
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem('userData');
+    setIsLoggedIn(false);
+    setUserData(null);
+    navigate("/");
+  };
+
   return (
-<>
+    <>
       <div className="bg-cyan-900 text-white text-sm px-4 py-2 flex justify-between">
         <div className="flex gap-4">
-          
         </div>
         <div className="flex gap-4">
-          <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleRegisterClick}><FaRegistered /> Register</span>
-          <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLoginClick}><FaUser /> Login</span>
+          {isLoggedIn ? (
+            <>
+              <span className="flex items-center gap-1">Welcome, {userData?.fullName}</span>
+              <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLogout}>
+                <FaSignOutAlt /> Logout
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleRegisterClick}>
+                <FaRegistered /> Register
+              </span>
+              <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLoginClick}>
+                <FaUser /> Login
+              </span>
+            </>
+          )}
         </div>
       </div>
 
@@ -38,7 +74,7 @@ const Header = () => {
           <span role="img" aria-label="logo">📘</span> LimLoom
         </div>
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
-          <li className="cursor-pointer hover:text-cyan-600 cursor-pointer hover:text-cyan-100" onClick={handleHomeClick}>Home</li>
+          <li className="cursor-pointer hover:text-cyan-600" onClick={handleHomeClick}>Home</li>
           <li className="cursor-pointer hover:text-cyan-600">Category</li>
           <li className="cursor-pointer hover:text-cyan-600">Authors</li>
           <li className="cursor-pointer hover:text-cyan-600">Contact</li>
@@ -50,8 +86,6 @@ const Header = () => {
           <FaShoppingCart className="text-gray-600 cursor-pointer" />
         </div>
       </nav>
-
-      
     </>
   );
 };

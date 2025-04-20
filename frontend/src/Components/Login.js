@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const Book = ({ color, delay, position }) => {
   const bookStyle = {
@@ -11,6 +12,7 @@ const Book = ({ color, delay, position }) => {
   };
 
   return (
+    
     <div className="absolute" style={bookStyle}>
       <div className="book-container">
         <div className={`book bg-${color}-600 w-16 h-24 relative transform-gpu`}>
@@ -282,13 +284,15 @@ const Login = () => {
       });
   
 
-      const { token, userId, email, fullName } = response.data;
-  
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userId);
-      localStorage.setItem("email", email);
-      localStorage.setItem("fullName", fullName);
+      const userData = {
+        token: response.data.token,
+        userId: response.data.userId,
+        email: response.data.email,
+        fullName: response.data.fullName
+      };
+      
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
       
       setMessage("Login successful! 🚀");
       setMessageType("success");
@@ -324,7 +328,10 @@ const Login = () => {
   
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen relative overflow-hidden bg-animated flex items-center justify-center">
+    
       <Particles />
       <FloatingText />
       <LibraryShelf />
@@ -413,6 +420,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

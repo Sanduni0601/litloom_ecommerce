@@ -7,10 +7,12 @@ import {
   FaBicycle
 } from 'react-icons/fa';
 import girl from '../Images/image1.png';
+import Header from './Header';
 
 const HomePage = () => {
   return (
 <>
+<Header/>
       <section className="relative overflow-hidden bg-gradient-to-r from-blue-50 to-cyan-50 px-6 pt-12 pb-16">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
           <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-cyan-100 opacity-60"></div>
