@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Book = ({ color, delay, position }) => {
   const bookStyle = {
@@ -106,7 +107,8 @@ const LibraryShelf = () => {
   );
 };
 
-const RegisterForm = () => {
+const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -271,7 +273,55 @@ const RegisterForm = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setMessageType("");
+  
+    try {
+      const response = await axios.post("http://localhost:8080/api/login", {
+        email: formData.email,
+        password: formData.password
+      });
+  
+
+      const { token, userId, email, fullName } = response.data;
+  
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("email", email);
+      localStorage.setItem("fullName", fullName);
+      
+      setMessage("Login successful! 🚀");
+      setMessageType("success");
+  
+
+      navigate("/");
+  
+    } catch (error) {
+
+      let errorMsg;
+      
+      if (error.response && error.response.data) {
+
+        if (typeof error.response.data === 'string') {
+          errorMsg = error.response.data;
+        } 
+
+        else if (error.response.data.message) {
+          errorMsg = error.response.data.message;
+        }
+      }
+
+      if (!errorMsg) {
+        errorMsg = "Login failed. Please check your credentials.";
+      }
+      
+      setMessage(errorMsg);
+      setMessageType("error");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-animated flex items-center justify-center">
@@ -325,7 +375,17 @@ const RegisterForm = () => {
                 onChange={handleChange}
               />
             </div>
-         
+            {message && (
+  <div 
+    className={`mt-4 p-3 rounded text-sm font-medium ${
+      messageType === "success" 
+        ? "bg-green-100 text-green-800" 
+        : "bg-red-100 text-red-800"
+    }`}
+  >
+    {message}
+  </div>
+)}
           <div>
             <button
               type="submit"
@@ -340,7 +400,7 @@ const RegisterForm = () => {
                   </svg>
                 </span>
               ) : null}
-              {loading ? "Registering..." : "Log in to LitLoom"}
+              {loading ? "Log in..." : "Log in to LitLoom"}
             </button>
           </div>
         </form>
@@ -356,4 +416,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default Login;

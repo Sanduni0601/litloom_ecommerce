@@ -7,7 +7,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import litloom.backend.model.User;
 import litloom.backend.repository.UserRepository;
+import litloom.backend.security.JWTUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
@@ -15,7 +18,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private JWTUtil jwtUtil;
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 
@@ -46,4 +50,23 @@ public class UserService {
 
         return "Registration successful!";
     }
+    public Map<String, Object> loginUser(User user) {
+        User existingUser = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password"));
+
+        if (!existingUser.getPassword().equals(user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
+        }
+
+
+        String token = jwtUtil.generateToken(existingUser.getEmail());
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("userId", existingUser.getId());
+        response.put("email", existingUser.getEmail());
+        response.put("fullName", existingUser.getFullName());
+        
+        return response;
+    }
+    
 }

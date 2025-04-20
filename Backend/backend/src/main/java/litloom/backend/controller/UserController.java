@@ -1,5 +1,7 @@
 package litloom.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,6 +30,15 @@ public class UserController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+        try {
+            Map<String, Object> response = userService.loginUser(user);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
     
 }
 

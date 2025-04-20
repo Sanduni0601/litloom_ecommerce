@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Book = ({ color, delay, position }) => {
   const bookStyle = {
     animation: `float 8s ease-in-out infinite ${delay}s, rotateBook 15s linear infinite ${delay}s`,
@@ -283,6 +283,7 @@ const RegisterForm = () => {
       const response = await axios.post("http://localhost:8080/api/reg", formData);
       setMessage(response.data || "Registration successful!");
       setMessageType("success");
+      navigate("/login");
       setFormData({
         fullName: "",
         email: "",
@@ -297,8 +298,9 @@ const RegisterForm = () => {
       setLoading(false);
     }
   };
-
+  const navigate = useNavigate();
   return (
+ 
     <div className="min-h-screen relative overflow-hidden bg-animated flex items-center justify-center">
       <Particles />
       <FloatingText />
