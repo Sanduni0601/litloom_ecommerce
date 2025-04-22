@@ -45,7 +45,7 @@ public class UserService {
                     "Password must be at least 8 characters long, contain uppercase, lowercase, digit, and special character");
         }
 
-        user.setConfirmPassword(null); // don't save confirmPassword
+        user.setConfirmPassword(null);
         userRepository.save(user);
 
         return "Registration successful!";

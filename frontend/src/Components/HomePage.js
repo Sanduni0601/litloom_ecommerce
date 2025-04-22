@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   FaBookOpen,
   FaShoppingBasket,
@@ -9,7 +9,9 @@ import {
 import girl from '../Images/image1.png';
 import Header from './Header';
 
+ 
 const HomePage = () => {
+  
   return (
 <>
 <Header/>

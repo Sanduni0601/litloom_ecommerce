@@ -30,13 +30,14 @@ const Header = () => {
   const handleHomeClick = () => {
     navigate("/");
   };
-
+  const handleAddBookClick = () => {
+    navigate("/book");
+  };
   const handleLoginClick = () => {
     navigate("/login");
   };
 
   const handleLogout = () => {
-    // Clear user data from localStorage
     localStorage.removeItem('userData');
     setIsLoggedIn(false);
     setUserData(null);
@@ -78,6 +79,11 @@ const Header = () => {
           <li className="cursor-pointer hover:text-cyan-600">Category</li>
           <li className="cursor-pointer hover:text-cyan-600">Authors</li>
           <li className="cursor-pointer hover:text-cyan-600">Contact</li>
+          {isLoggedIn?(
+            <li className="cursor-pointer hover:text-cyan-600" onClick={handleAddBookClick}>Add your product</li>
+          ):(
+            <li></li>
+          )}
         </ul>
         <div className="flex items-center gap-4">
           <FaSearch className="text-gray-600 cursor-pointer" />
