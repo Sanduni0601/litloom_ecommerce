@@ -4,6 +4,7 @@ import Header from './Components/Header';
 import Login from './Components/Login';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddForm from './Components/AddForm';
+import BookList from './Components/BookList';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<Login/>} />
       <Route path='/book' element = {<AddForm/>}/>
+      <Route path = '/booklist' element={<BookList/>}/>
       </Routes>
     </Router>
   );

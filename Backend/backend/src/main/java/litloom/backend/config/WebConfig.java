@@ -9,7 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Map the /uploads/** URL pattern to your uploads directory
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:uploads/");
     }

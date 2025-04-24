@@ -8,10 +8,14 @@ import {
 } from 'react-icons/fa';
 import girl from '../Images/image1.png';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
  
 const HomePage = () => {
-  
+  const navigate = useNavigate();
+  const shopnavigate = () =>{
+    navigate("/booklist")
+  }
   return (
 <>
 <Header/>
@@ -58,7 +62,7 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <button className="bg-cyan-900 text-white px-8 py-3 rounded-full hover:bg-cyan-800 transition shadow-lg flex items-center gap-2">
+              <button className="bg-cyan-900 text-white px-8 py-3 rounded-full hover:bg-cyan-800 transition shadow-lg flex items-center gap-2" onClick={shopnavigate}>
                 Shop Now 
                 <span className="ml-1">→</span>
               </button>
