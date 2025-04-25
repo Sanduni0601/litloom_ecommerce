@@ -64,5 +64,14 @@ public class BookController {
         List<Book> books = bookService.getAllBooks();
         return ResponseEntity.ok(books);
     }
-    
+    @GetMapping("/{id}")
+public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+    Book book = bookService.getBookById(id);
+    if (book != null) {
+        return ResponseEntity.ok(book);
+    } else {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found with ID: " + id);
+    }
+}
+
 }

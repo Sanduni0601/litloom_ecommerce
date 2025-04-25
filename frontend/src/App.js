@@ -5,6 +5,7 @@ import Login from './Components/Login';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddForm from './Components/AddForm';
 import BookList from './Components/BookList';
+import BookDetail from './Components/BookDetail';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
       <Route path='/book' element = {<AddForm/>}/>
       <Route path = '/booklist' element={<BookList/>}/>
+      <Route path='/books/:bookId' element={<BookDetail/>}/>
       </Routes>
     </Router>
   );
