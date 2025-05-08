@@ -24,7 +24,7 @@ public class Book {
 
     private String author;
 
-    private String publisher;
+    private int publisher;
 
     private String isbn;
 

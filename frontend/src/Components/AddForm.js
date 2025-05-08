@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 
 const Book = ({ color, delay, position }) => {
@@ -113,7 +114,17 @@ const AddBookStyled = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+      setIsLoggedIn(true);
+    }
+  }, []);
  
   const [formSections, setFormSections] = useState([]);
   
@@ -430,8 +441,8 @@ const AddBookStyled = () => {
                     type="text"
                     id="publisher"
                     name="publisher"
-                    value={book.publisher}
-                    onChange={handleChange}
+                    value={userData?.userId}
+                    readOnly
                     className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 input-focus-effect transition-all duration-300"
                   />
                 </div>
