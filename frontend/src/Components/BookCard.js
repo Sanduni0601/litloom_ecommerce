@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { addToCart } from './services/cartService';
 
 const BookCard = ({ book }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      const response = await addToCart(book.id, quantity);
+      
+      if (response.success) {
+        setMessage('Added to cart!');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage(response.message || 'Failed to add to cart');
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      setMessage('Error adding to cart');
+      setTimeout(() => setMessage(''), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-xl hover:transform hover:scale-105">
       <div className="h-48 bg-gray-200 flex justify-center items-center">
@@ -40,7 +65,21 @@ const BookCard = ({ book }) => {
                 : 'Out of Stock'}
           </span>
         </div>
-        
+        <div className="flex items-center mb-4">
+        <label htmlFor={`quantity-${book.id}`} className="mr-2">Qty:</label>
+        <select 
+          id={`quantity-${book.id}`}
+          value={quantity} 
+          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          className="border rounded p-1"
+        >
+          {[...Array(Math.min(10, book.stockQuantity)).keys()].map(num => (
+            <option key={num + 1} value={num + 1}>
+              {num + 1}
+            </option>
+          ))}
+        </select>
+      </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <Link 
             to={`/books/${book.id}`}
@@ -48,21 +87,24 @@ const BookCard = ({ book }) => {
           >
             Details
           </Link>
-          <button 
-            className={`px-2 py-1 rounded ${
-              book.stockQuantity > 0 
-                ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                : 'bg-gray-400 text-gray-100 cursor-not-allowed'
-            }`}
-            disabled={book.stockQuantity === 0}
-            onClick={() => {
-              if (book.stockQuantity > 0) {
-                console.log('Added to cart:', book.id);
-              }
-            }}
-          >
-            Add to Cart
-          </button>
+         
+          <button
+        onClick={handleAddToCart}
+        disabled={loading || book.stockQuantity === 0}
+        className={`w-full py-2 px-4 rounded ${
+          book.stockQuantity === 0
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-500 text-white hover:bg-blue-600'
+        }`}
+      >
+        {loading ? 'Adding...' : book.stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart'}
+      </button>
+      
+      {message && (
+        <div className="mt-2 text-center text-sm font-medium text-green-600">
+          {message}
+        </div>
+      )}
         </div>
       </div>
     </div>

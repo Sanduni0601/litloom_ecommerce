@@ -18,6 +18,7 @@ function App() {
       <Route path='/book' element = {<AddForm/>}/>
       <Route path = '/booklist' element={<BookList/>}/>
       <Route path='/books/:bookId' element={<BookDetail/>}/>
+     
       </Routes>
     </Router>
   );
