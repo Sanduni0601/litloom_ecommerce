@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { addToCart } from './services/cartService';
 
 const BookCard = ({ book }) => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+ const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+      setIsLoggedIn(true);
+    }
+  }, []);
   const handleAddToCart = async () => {
     try {
       setLoading(true);
-      const response = await addToCart(book.id, quantity);
+      const response = await addToCart(userData.userId,book.id, quantity);
       
       if (response.success) {
         setMessage('Added to cart!');

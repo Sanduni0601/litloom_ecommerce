@@ -42,4 +42,19 @@ public class Book {
     private String imageUrl;
 
     private Integer publicationYear;
+
+      public Integer getQuantity() {
+        return stockQuantity;
+    }
+    
+    public void setQuantity(Integer quantity) {
+        this.stockQuantity = quantity;
+    }
+
+    public BigDecimal getPrice(){
+        return price;
+    } 
+     public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }
