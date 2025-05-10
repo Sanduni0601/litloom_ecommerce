@@ -1,9 +1,9 @@
 import api from './api';
 
-// For demo purposes, using a fixed userId
-const DEMO_USER_ID = 1;
+// For fallback purposes
+const DEMO_USER_ID = 2;
 
-export const addToCart = async (userId,bookId, quantity) => {
+export const addToCart = async (userId, bookId, quantity) => {
   try {
     const response = await api.post('/cart/add', {
       userId,
@@ -17,15 +17,27 @@ export const addToCart = async (userId,bookId, quantity) => {
   }
 };
 
-// export const getCartItems = async () => {
-//   try {
-//     const response = await api.get(`/cart/${userId}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching cart items:', error);
-//     throw error;
-//   }
-// };
+export const getCartItems = async () => {
+  try {
+    // Get userData from localStorage
+    const storedUserData = localStorage.getItem('userData');
+    let userId;
+    
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      userId = userData.userId; // Use userData.userId
+    } else {
+      // Fallback to demo user ID if no userData in localStorage
+      userId = DEMO_USER_ID;
+    }
+    
+    const response = await api.get(`http://localhost:8080/api/cart/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching cart items:', error);
+    throw error;
+  }
+};
 
 export const removeFromCart = async (cartItemId) => {
   try {

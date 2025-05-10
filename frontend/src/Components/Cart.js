@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
+import { getCartItems } from './services/cartService'; // Import the cart service
+
+// Assuming you have a DEMO_USER_ID defined in your constants or environment
+const DEMO_USER_ID = 1; // Replace with your actual user ID constant
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Hardcoded user ID for demonstration (in a real app, this would come from authentication)
-  const userId = 1;
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   // Fetch cart items when component mounts
   useEffect(() => {
@@ -17,22 +29,16 @@ export default function Cart() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch(`http://localhost:8080/api/cart/user/${userId}`);
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch cart items');
-      }
-      
-      const data = await response.json();
+      // getCartItems now handles getting the userId internally
+      const data = await getCartItems();
       setCartItems(data);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Failed to fetch cart items');
     } finally {
       setLoading(false);
     }
   };
-
   const updateQuantity = async (id, newQuantity) => {
     if (newQuantity < 1) return;
     
@@ -84,32 +90,6 @@ export default function Cart() {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
   };
 
-  const addToCart = async (bookId, quantity) => {
-    try {
-      const response = await fetch('http://localhost:8080/api/cart/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userId,
-          bookId: bookId,
-          quantity: quantity
-        }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add item to cart');
-      }
-      
-      // Refresh cart after adding item
-      fetchCartItems();
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -132,10 +112,10 @@ export default function Cart() {
         <div className="bg-white shadow-md rounded-lg p-8 text-center">
           <p className="text-gray-500 text-lg mb-4">Your cart is empty</p>
           <button 
-            onClick={() => addToCart(1, 1)} 
+            onClick={() => window.location.href = '/books'} 
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
-            Add Sample Book to Cart
+            Browse Books
           </button>
         </div>
       ) : (
@@ -144,7 +124,7 @@ export default function Cart() {
             <table className="w-full table-auto">
               <thead>
                 <tr className="bg-gray-100 text-left">
-                  <th className="px-6 py-3 text-gray-600">Book ID</th>
+                  <th className="px-6 py-3 text-gray-600">Book</th>
                   <th className="px-6 py-3 text-gray-600">Price</th>
                   <th className="px-6 py-3 text-gray-600">Quantity</th>
                   <th className="px-6 py-3 text-gray-600">Subtotal</th>
@@ -154,7 +134,29 @@ export default function Cart() {
               <tbody>
                 {cartItems.map((item) => (
                   <tr key={item.id} className="border-b hover:bg-gray-50">
-                    <td className="px-6 py-4">{item.bookId}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center space-x-3">
+                        {item.book && item.book.imageUrl ? (
+                          <img 
+                            src={item.book.imageUrl} 
+                            alt={item.book.title}
+                            className="w-16 h-20 object-cover"
+                          />
+                        ) : (
+                          <div className="w-16 h-20 bg-gray-200 flex items-center justify-center text-gray-500">
+                            No image
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-medium text-gray-800">
+                            {item.book ? item.book.title : `Book #${item.bookId}`}
+                          </h3>
+                          {item.book && (
+                            <p className="text-sm text-gray-500">{item.book.author}</p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
                     <td className="px-6 py-4">${item.price?.toFixed(2) || '0.00'}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-3">
