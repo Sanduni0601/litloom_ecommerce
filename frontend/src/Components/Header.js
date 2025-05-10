@@ -36,6 +36,9 @@ const Header = () => {
   const handleLoginClick = () => {
     navigate("/login");
   };
+  const handleCartClick = () => {
+    navigate("/cart");
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('userData');
@@ -89,7 +92,7 @@ const Header = () => {
           <FaSearch className="text-gray-600 cursor-pointer" />
           <FaBell className="text-gray-600 cursor-pointer" />
           <FaHeart className="text-gray-600 cursor-pointer" />
-          <FaShoppingCart className="text-gray-600 cursor-pointer" />
+          <FaShoppingCart onClick={handleCartClick}className="text-gray-600 cursor-pointer" />
         </div>
       </nav>
     </>

@@ -435,29 +435,7 @@ const BookDetail = () => {
                   <div className="flex items-center mb-6">
                     <label htmlFor="quantity" className="mr-4 font-medium text-gray-700">Quantity:</label>
                     <div className="flex border border-gray-300 rounded-md shadow-sm">
-                      <button 
-                        type="button"
-                        className="px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 font-medium rounded-l-md"
-                        onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                      >
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        id="quantity"
-                        min="1"
-                        max={book?.stockQuantity}
-                        value={quantity}
-                        onChange={handleQuantityChange}
-                        className="w-16 text-center border-l border-r border-gray-300"
-                      />
-                      <button 
-                        type="button"
-                        className="px-4 py-2 bg-gray-100 text-gray-600 hover:bg-gray-200 font-medium rounded-r-md"
-                        onClick={() => quantity < book?.stockQuantity && setQuantity(quantity + 1)}
-                      >
-                        +
-                      </button>
+                    
                     </div>
                   </div>
                   
