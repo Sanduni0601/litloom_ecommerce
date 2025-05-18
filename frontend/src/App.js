@@ -7,6 +7,7 @@ import AddForm from './Components/AddForm';
 import BookList from './Components/BookList';
 import BookDetail from './Components/BookDetail';
 import Cart from './Components/Cart';
+import ContactUs from './Components/Contact';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Route path = '/booklist' element={<BookList/>}/>
       <Route path='/books/:bookId' element={<BookDetail/>}/>
      <Route path='/cart' element={<Cart/>}/>
+     <Route path='/contact' element={<ContactUs/>}/>
       </Routes>
     </Router>
   );

@@ -38,7 +38,9 @@ const Header = () => {
   const handleHomeClick = () => {
     navigate("/");
   };
-
+ const handleContactClick = () => {
+    navigate("/contact");
+  };
   const handleAddBookClick = () => {
     navigate("/book");
   };
@@ -100,34 +102,7 @@ const Header = () => {
         </div>
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleHomeClick}>Home</li>
-          
-          {/* Category dropdown */}
-          <li className="relative">
-            <div 
-              className="cursor-pointer hover:text-cyan-600 flex items-center gap-1"
-              onClick={toggleCategoryDropdown}
-            >
-              Category <FaAngleDown />
-            </div>
-            
-            {/* Dropdown menu */}
-            {showCategoryDropdown && (
-              <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 w-48 z-10">
-                {categories.map((category, index) => (
-                  <div 
-                    key={index}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category}
-                  </div>
-                ))}
-              </div>
-            )}
-          </li>
-          
-          <li className="cursor-pointer hover:text-cyan-600">Authors</li>
-          <li className="cursor-pointer hover:text-cyan-600">Contact</li>
+          <li className="cursor-pointer hover:text-cyan-600" onClick={handleContactClick}>Contact</li>
           {isLoggedIn ? (
             <li className="cursor-pointer hover:text-cyan-600" onClick={handleAddBookClick}>Add your product</li>
           ) : (
