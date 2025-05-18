@@ -151,23 +151,7 @@ export default function Cart() {
                       </div>
                     </td>
                     <td className="px-6 py-4">${item.price?.toFixed(2) || '0.00'}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center space-x-3">
-                        <button 
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 transition-colors"
-                        >
-                          -
-                        </button>
-                        <span className="w-10 text-center font-medium">{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 transition-colors"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
+                    <td className='px-6 py-4'>{item.quantity}</td>
                     <td className="px-6 py-4 font-medium">
                       ${(item.price * item.quantity)?.toFixed(2) || '0.00'}
                     </td>

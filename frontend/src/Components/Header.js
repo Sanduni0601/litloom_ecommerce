@@ -101,24 +101,23 @@ const Header = () => {
 
       <nav className="bg-white shadow-md py-4 px-6 flex items-center justify-between">
         <div className="text-2xl font-bold text-red-900 flex items-center gap-2">
-          <span role="img" aria-label="logo">📘</span> LimLoom
+          <span role="img" aria-label="logo">📘</span> LitLoom
         </div>
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleHomeClick}>Home</li>
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleContactClick}>Contact</li>
-          <li className="cursor-pointer hover:text-cyan-600" onClick={handleShopClick}>Show now</li>
+          <li className="cursor-pointer hover:text-cyan-600" onClick={handleShopClick}>Shop now</li>
           {isLoggedIn ? (
+            <>
             <li className="cursor-pointer hover:text-cyan-600" onClick={handleAddBookClick}>Add your product</li>
+            <li className="cursor-pointer hover:text-cyan-600" onClick={handleCartClick}>Your Cart</li>
+
+            </>
           ) : (
             <li></li>
           )}
         </ul>
-        <div className="flex items-center gap-4">
-          {/* <FaSearch className="text-gray-600 cursor-pointer" /> */}
-          <FaBell className="text-gray-600 cursor-pointer" />
-          {/* <FaHeart className="text-gray-600 cursor-pointer" /> */}
-          <FaShoppingCart onClick={handleCartClick} className="text-gray-600 cursor-pointer" />
-        </div>
+       
       </nav>
     </>
   );

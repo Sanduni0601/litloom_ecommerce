@@ -8,7 +8,7 @@ export const addToCart = async (userId, bookId, quantity) => {
     const response = await api.post('/cart/add', {
       userId,
       bookId,
-      quantity:1
+      quantity
     });
     return response.data;
   } catch (error) {
