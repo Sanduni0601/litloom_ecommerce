@@ -41,6 +41,9 @@ const Header = () => {
  const handleContactClick = () => {
     navigate("/contact");
   };
+  const handleShopClick = () => {
+    navigate("/booklist");
+  };
   const handleAddBookClick = () => {
     navigate("/book");
   };
@@ -103,6 +106,7 @@ const Header = () => {
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleHomeClick}>Home</li>
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleContactClick}>Contact</li>
+          <li className="cursor-pointer hover:text-cyan-600" onClick={handleShopClick}>Show now</li>
           {isLoggedIn ? (
             <li className="cursor-pointer hover:text-cyan-600" onClick={handleAddBookClick}>Add your product</li>
           ) : (

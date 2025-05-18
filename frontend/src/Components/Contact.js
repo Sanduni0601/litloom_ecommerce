@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Header from "./Header";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +27,8 @@ const ContactUs = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen bg-white p-6 md:p-12 flex flex-col items-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">Contact Litloom</h1>
       <p className="text-gray-600 mb-8 text-center max-w-xl">
@@ -95,6 +98,7 @@ const ContactUs = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 
