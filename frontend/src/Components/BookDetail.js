@@ -14,7 +14,9 @@ const BookDetail = () => {
   const [addingToCart, setAddingToCart] = useState(false);
   const [addToCartMessage, setAddToCartMessage] = useState('');
   const [addToCartSuccess, setAddToCartSuccess] = useState(false);
-  
+  const [userData, setUserData] = useState(null);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
@@ -38,11 +40,19 @@ const BookDetail = () => {
       setQuantity(value);
     }
   };
+   
   
+    useEffect(() => {
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData));
+        setIsLoggedIn(true);
+      }
+    }, []);
   const handleAddToCart = async () => {
     try {
       setAddingToCart(true);
-      const response = await addToCart(bookId, 1);
+      const response = await addToCart(userData.userId,bookId, quantity);
       
       if (response.success) {
         setAddToCartSuccess(true);
@@ -183,6 +193,56 @@ const BookDetail = () => {
                   </div>
                 </div>
               </div>
+              
+              {book?.stockQuantity > 0 && (
+                <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+                  <div className="flex items-center mb-6">
+                    <label htmlFor="quantity" className="mr-4 font-medium text-gray-700">Quantity:</label>
+                    <div className="flex items-center mb-6">
+                    <label htmlFor="quantity" className="mr-4 font-medium text-gray-700">Quantity:</label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="number"
+                        id="quantity"
+                        min="1"
+                        max={book?.stockQuantity || 1}
+                        value={quantity}
+                        onChange={handleQuantityChange}
+                        className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <span className="text-gray-600">of {book?.stockQuantity} available</span>
+                    </div>
+                  </div>
+
+                  </div>
+                  
+                  <div className="flex items-center flex-wrap">
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={addingToCart || book?.stockQuantity === 0}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all duration-200 hover:shadow-lg flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      {addingToCart ? 'Adding...' : 'Add to Cart'}
+                    </button>
+                    
+                    {addToCartMessage && (
+                      <div className={`w-full mt-4 ${addToCartSuccess ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'} p-3 rounded-lg flex items-center`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {addToCartSuccess ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          )}
+                        </svg>
+                        {addToCartMessage}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
