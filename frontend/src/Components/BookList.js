@@ -10,29 +10,7 @@ const BookList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(8);
   const [searchTerm, setSearchTerm] = useState('');
-   const [category, setCategory] = useState("");
-  //const [books, setBooks] = useState([]);
-
-  const fetchBooks = (category) => {
-    const params = {};
-    if (category) params.category = category;
-
-    axios
-      .get("http://localhost:8080/api/books/books", { params })
-      .then((res) => setBooks(res.data))
-      .catch((err) => console.error("Error fetching books", err));
-  };
-
-  const handleFilterChange = (type, value) => {
-    if (type === "category") {
-      setCategory(value);
-      fetchBooks(value);
-    }
-  };
-
-  useEffect(() => {
-    fetchBooks(); // Load all books initially
-  }, []);
+  
   useEffect(() => {
     const fetchBooks = async () => {
       try {
