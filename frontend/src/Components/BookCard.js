@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addToCart } from './services/cartService';
+import Header from './Header';
 
 const BookCard = ({ book }) => {
   const [quantity, setQuantity] = useState(1);
@@ -38,6 +39,8 @@ const BookCard = ({ book }) => {
   };
 
   return (
+    <>
+    {/* <Header/> */}
     <div className="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:shadow-xl hover:transform hover:scale-105">
       <div className="h-48 bg-gray-200 flex justify-center items-center">
         {book.imageUrl ? (
@@ -118,6 +121,7 @@ const BookCard = ({ book }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

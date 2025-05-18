@@ -6,7 +6,8 @@ import {
   FaSearch,
   FaBell,
   FaRegistered,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaAngleDown
 } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +15,13 @@ const Header = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
+  // Book categories 
+  const categories = [
+    'Fiction', 'Non-fiction', 'Science Fiction', 'Fantasy', 'Mystery',
+    'Biography', 'History', 'Self-help', 'Business', 'Computer Science'
+  ];
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
@@ -30,12 +38,15 @@ const Header = () => {
   const handleHomeClick = () => {
     navigate("/");
   };
+
   const handleAddBookClick = () => {
     navigate("/book");
   };
+
   const handleLoginClick = () => {
     navigate("/login");
   };
+
   const handleCartClick = () => {
     navigate("/cart");
   };
@@ -45,6 +56,16 @@ const Header = () => {
     setIsLoggedIn(false);
     setUserData(null);
     navigate("/");
+  };
+
+  const handleCategoryClick = (category) => {
+    // Navigate to books page with category filter
+    navigate(`/books?category=${category}`);
+    setShowCategoryDropdown(false);
+  };
+
+  const toggleCategoryDropdown = () => {
+    setShowCategoryDropdown(!showCategoryDropdown);
   };
 
   return (
@@ -79,20 +100,45 @@ const Header = () => {
         </div>
         <ul className="hidden md:flex gap-10 text-gray-700 font-medium">
           <li className="cursor-pointer hover:text-cyan-600" onClick={handleHomeClick}>Home</li>
-          <li className="cursor-pointer hover:text-cyan-600">Category</li>
+          
+          {/* Category dropdown */}
+          <li className="relative">
+            <div 
+              className="cursor-pointer hover:text-cyan-600 flex items-center gap-1"
+              onClick={toggleCategoryDropdown}
+            >
+              Category <FaAngleDown />
+            </div>
+            
+            {/* Dropdown menu */}
+            {showCategoryDropdown && (
+              <div className="absolute top-full left-0 bg-white shadow-md rounded-md py-2 w-48 z-10">
+                {categories.map((category, index) => (
+                  <div 
+                    key={index}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category}
+                  </div>
+                ))}
+              </div>
+            )}
+          </li>
+          
           <li className="cursor-pointer hover:text-cyan-600">Authors</li>
           <li className="cursor-pointer hover:text-cyan-600">Contact</li>
-          {isLoggedIn?(
+          {isLoggedIn ? (
             <li className="cursor-pointer hover:text-cyan-600" onClick={handleAddBookClick}>Add your product</li>
-          ):(
+          ) : (
             <li></li>
           )}
         </ul>
         <div className="flex items-center gap-4">
-          <FaSearch className="text-gray-600 cursor-pointer" />
+          {/* <FaSearch className="text-gray-600 cursor-pointer" /> */}
           <FaBell className="text-gray-600 cursor-pointer" />
-          <FaHeart className="text-gray-600 cursor-pointer" />
-          <FaShoppingCart onClick={handleCartClick}className="text-gray-600 cursor-pointer" />
+          {/* <FaHeart className="text-gray-600 cursor-pointer" /> */}
+          <FaShoppingCart onClick={handleCartClick} className="text-gray-600 cursor-pointer" />
         </div>
       </nav>
     </>

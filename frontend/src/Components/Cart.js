@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getCartItems } from './services/cartService'; // Import the cart service
+import Header from './Header';
 
 // Assuming you have a DEMO_USER_ID defined in your constants or environment
 const DEMO_USER_ID = 1; // Replace with your actual user ID constant
@@ -99,6 +100,8 @@ export default function Cart() {
   }
 
   return (
+    <>
+    <Header/>
     <div className="max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Shopping Cart</h1>
       
@@ -215,5 +218,6 @@ export default function Cart() {
         </div>
       )}
     </div>
+    </>
   );
 }

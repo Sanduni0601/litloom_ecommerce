@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BookCard from './BookCard';
+import Header from './Header';
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -9,7 +10,29 @@ const BookList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(8);
   const [searchTerm, setSearchTerm] = useState('');
-  
+   const [category, setCategory] = useState("");
+  //const [books, setBooks] = useState([]);
+
+  const fetchBooks = (category) => {
+    const params = {};
+    if (category) params.category = category;
+
+    axios
+      .get("http://localhost:8080/api/books/books", { params })
+      .then((res) => setBooks(res.data))
+      .catch((err) => console.error("Error fetching books", err));
+  };
+
+  const handleFilterChange = (type, value) => {
+    if (type === "category") {
+      setCategory(value);
+      fetchBooks(value);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks(); // Load all books initially
+  }, []);
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -58,6 +81,8 @@ const BookList = () => {
   }
   
   return (
+    <>
+    <Header/>
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">Discover Books</h1>
       
@@ -106,6 +131,7 @@ const BookList = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 
