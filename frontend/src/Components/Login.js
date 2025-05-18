@@ -12,7 +12,6 @@ const Book = ({ color, delay, position }) => {
   };
 
   return (
-    
     <div className="absolute" style={bookStyle}>
       <div className="book-container">
         <div className={`book bg-${color}-600 w-16 h-24 relative transform-gpu`}>
@@ -276,41 +275,63 @@ const Login = () => {
     setLoading(true);
     setMessage("");
     setMessageType("");
-  
+
+    // Check if using admin credentials directly
+    if (formData.email === "admin@gmail.com" && formData.password === "Admin@1234") {
+      // Store admin user data in localStorage
+      const adminUserData = {
+        token: "admin-token", // You might want to use a real token from your backend
+        userId: "admin-user-id",
+        email: formData.email,
+        fullName: "Admin User",
+        isAdmin: true
+      };
+      
+      localStorage.setItem('userData', JSON.stringify(adminUserData));
+      
+      setMessage("Admin login successful! 🚀");
+      setMessageType("success");
+      
+      setTimeout(() => {
+        navigate("/admin-dashboard");
+      }, 500);
+      
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:8080/api/login", {
         email: formData.email,
         password: formData.password
       });
-  
 
       const userData = {
         token: response.data.token,
         userId: response.data.userId,
         email: response.data.email,
-        fullName: response.data.fullName
+        fullName: response.data.fullName,
+        isAdmin: response.data.isAdmin || false
       };
-      
+
       localStorage.setItem('userData', JSON.stringify(userData));
-      
-      
+
       setMessage("Login successful! 🚀");
       setMessageType("success");
-  
 
-      navigate("/");
-  
+      if (response.data.isAdmin) {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/");
+      }
+
     } catch (error) {
-
       let errorMsg;
-      
-      if (error.response && error.response.data) {
 
+      if (error.response && error.response.data) {
         if (typeof error.response.data === 'string') {
           errorMsg = error.response.data;
-        } 
-
-        else if (error.response.data.message) {
+        } else if (error.response.data.message) {
           errorMsg = error.response.data.message;
         }
       }
@@ -318,14 +339,13 @@ const Login = () => {
       if (!errorMsg) {
         errorMsg = "Login failed. Please check your credentials.";
       }
-      
+
       setMessage(errorMsg);
       setMessageType("error");
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <>
@@ -350,9 +370,7 @@ const Login = () => {
             <h2 className="text-3xl font-extrabold text-indigo-900 mb-1">Start Your Reading Journey</h2>
           </div>
           
-         <form className="mt-18 space-y-8" onSubmit={handleSubmit}>
-          
-            
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
               <input
@@ -374,7 +392,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 required
                 value={formData.password}
                 className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -382,35 +400,37 @@ const Login = () => {
                 onChange={handleChange}
               />
             </div>
+            
             {message && (
-  <div 
-    className={`mt-4 p-3 rounded text-sm font-medium ${
-      messageType === "success" 
-        ? "bg-green-100 text-green-800" 
-        : "bg-red-100 text-red-800"
-    }`}
-  >
-    {message}
-  </div>
-)}
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
-            >
-              {loading ? (
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <svg className="animate-spin h-5 w-5 text-indigo-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                </span>
-              ) : null}
-              {loading ? "Log in..." : "Log in to LitLoom"}
-            </button>
-          </div>
-        </form>
+              <div 
+                className={`p-3 rounded text-sm font-medium ${
+                  messageType === "success" 
+                    ? "bg-green-100 text-green-800" 
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {message}
+              </div>
+            )}
+            
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+              >
+                {loading ? (
+                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <svg className="animate-spin h-5 w-5 text-indigo-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </span>
+                ) : null}
+                {loading ? "Logging in..." : "Log in to LitLoom"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

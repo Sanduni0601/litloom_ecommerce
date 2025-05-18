@@ -8,6 +8,7 @@ import BookList from './Components/BookList';
 import BookDetail from './Components/BookDetail';
 import Cart from './Components/Cart';
 import ContactUs from './Components/Contact';
+import AdminDashboard from './Components/AdminDashboard';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path='/books/:bookId' element={<BookDetail/>}/>
      <Route path='/cart' element={<Cart/>}/>
      <Route path='/contact' element={<ContactUs/>}/>
+     <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
       </Routes>
     </Router>
   );
