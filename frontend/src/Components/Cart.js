@@ -139,17 +139,7 @@ export default function Cart() {
                   <tr key={item.id} className="border-b hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-3">
-                        {item.book && item.book.imageUrl ? (
-                          <img 
-                            src={item.book.imageUrl} 
-                            alt={item.book.title}
-                            className="w-16 h-20 object-cover"
-                          />
-                        ) : (
-                          <div className="w-16 h-20 bg-gray-200 flex items-center justify-center text-gray-500">
-                            No image
-                          </div>
-                        )}
+                        
                         <div>
                           <h3 className="font-medium text-gray-800">
                             {item.book ? item.book.title : `Book #${item.bookId}`}
