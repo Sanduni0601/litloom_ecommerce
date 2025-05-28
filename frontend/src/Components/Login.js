@@ -276,11 +276,11 @@ const Login = () => {
     setMessage("");
     setMessageType("");
 
-    // Check if using admin credentials directly
+    
     if (formData.email === "admin@gmail.com" && formData.password === "Admin@1234") {
-      // Store admin user data in localStorage
+
       const adminUserData = {
-        token: "admin-token", // You might want to use a real token from your backend
+        token: "admin-token", 
         userId: "admin-user-id",
         email: formData.email,
         fullName: "Admin User",
