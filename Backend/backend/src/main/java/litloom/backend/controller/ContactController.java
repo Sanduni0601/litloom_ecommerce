@@ -1,5 +1,7 @@
 package litloom.backend.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,5 +19,10 @@ public class ContactController {
     @PostMapping
     public Contact submitContact(@RequestBody Contact contact) {
         return contactRepository.save(contact);
+    }
+
+    @GetMapping("/all")
+    public List<Contact> getAllMessages() {
+        return contactRepository.findAll();
     }
 }
