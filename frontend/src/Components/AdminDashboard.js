@@ -60,13 +60,19 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6 sm:p-10">
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-10">📊 Admin Dashboard</h1>
-      <div className="flex gap-4">
-<span className="flex items-center gap-1">Welcome, {userData?.fullName}</span>
-              <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLogout}>
+       <div className="flex gap-4">
+        </div>
+      <div className="absolute top-0 right-0 m-10 flex gap-4">
+      
+            <span className="flex items-center gap-1 " >Welcome, Admin</span>
+              <span className="flex items-center gap-3 cursor-pointer hover:text-blue-600" onClick={handleLogout}>
                 <FaSignOutAlt /> Logout
               </span>
+              
               </div>
+              <br></br>
+               <br></br>
+                <br></br>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <StatCard title="Registered Users" value={stats.userCount} icon="👥" color="bg-blue-500" />
         <StatCard title="Books in Store" value={stats.bookCount} icon="📚" color="bg-green-500" />
