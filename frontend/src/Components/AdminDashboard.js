@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const StatCard = ({ title, value, icon, color }) => (
   <motion.div
@@ -26,6 +28,16 @@ const AdminDashboard = () => {
 
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('userData');
+    setIsLoggedIn(false);
+    setUserData(null);
+    navigate("/");
+  };
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -49,7 +61,12 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6 sm:p-10">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-10">📊 Admin Dashboard</h1>
-
+      <div className="flex gap-4">
+<span className="flex items-center gap-1">Welcome, {userData?.fullName}</span>
+              <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-100" onClick={handleLogout}>
+                <FaSignOutAlt /> Logout
+              </span>
+              </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <StatCard title="Registered Users" value={stats.userCount} icon="👥" color="bg-blue-500" />
         <StatCard title="Books in Store" value={stats.bookCount} icon="📚" color="bg-green-500" />
