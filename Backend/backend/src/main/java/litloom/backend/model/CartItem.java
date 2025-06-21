@@ -20,7 +20,7 @@ public class CartItem {
     
     private BigDecimal price;
     
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }

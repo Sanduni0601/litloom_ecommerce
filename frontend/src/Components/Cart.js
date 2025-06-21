@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCartItems } from './services/cartService'; 
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Cart() {
@@ -9,7 +10,11 @@ export default function Cart() {
   const [error, setError] = useState(null);
    const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
-
+const navigate = useNavigate();
+    
+  const navigatetocheckout = () =>{
+    navigate("/checkout");
+  }
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
@@ -177,7 +182,7 @@ export default function Cart() {
             </div>
             
             <div className="mt-6 flex justify-end">
-              <button className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition-colors font-medium">
+              <button className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition-colors font-medium" onClick={navigatetocheckout}>
                 Proceed to Checkout
               </button>
             </div>

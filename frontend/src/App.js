@@ -9,6 +9,7 @@ import BookDetail from './Components/BookDetail';
 import Cart from './Components/Cart';
 import ContactUs from './Components/Contact';
 import AdminDashboard from './Components/AdminDashboard';
+import CheckoutPaymentSystem from './Components/CheckOutPaymentSystem';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
      <Route path='/cart' element={<Cart/>}/>
      <Route path='/contact' element={<ContactUs/>}/>
      <Route path='/admin-dashboard' element={<AdminDashboard/>}/>
+     <Route path='/checkout' element={<CheckoutPaymentSystem/>}/>
       </Routes>
     </Router>
   );
