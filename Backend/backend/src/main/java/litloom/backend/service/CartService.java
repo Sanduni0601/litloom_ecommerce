@@ -38,7 +38,7 @@ public class CartService {
             CartItem cartItem = cartItemRepository.findByUserIdAndBookId(userId, bookId)
                     .orElseGet(() -> {
                         CartItem newItem = new CartItem();
-                        newItem.setUser(userId);
+                        newItem.setUserId(userId);
                         newItem.setBookId(bookId);
                         newItem.setPrice(book.getPrice());
                         newItem.setQuantity(0);

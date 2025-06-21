@@ -127,53 +127,55 @@ const CheckoutPaymentSystem = () => {
   };
 
   const processPayment = async () => {
-    setLoading(true);
-    setError('');
+  setLoading(true);
+  setError('');
 
-    try {
-      const orderData = {
-        shippingAddress,
-        paymentInfo: {
-          ...paymentInfo,
-          cardNumber: '****-****-****-' + paymentInfo.cardNumber.slice(-4)
-        },
-        items: cartItems,
-        pricing: {
-          subtotal: subtotal.toFixed(2),
-          tax: tax.toFixed(2),
-          shipping: shipping.toFixed(2),
-          total: total.toFixed(2)
-        }
-      };
+  try {
+    // Prepare payment data matching your Spring Boot Payment entity structure
+    const paymentData = {
+      user: {
+        id: userData?.userId || 1 // Use the logged-in user's ID
+      },
+      address: shippingAddress.street,
+      city: shippingAddress.city,
+      zipcode: parseInt(shippingAddress.zipCode),
+      country: shippingAddress.country,
+      cdno: parseInt(paymentInfo.cardNumber.replace(/\s/g, '')), // Remove spaces from card number
+      expired: paymentInfo.expiryDate,
+      cvv: parseInt(paymentInfo.cvv),
+      holder: paymentInfo.cardName
+    };
 
+    // Call your Spring Boot backend endpoint
+    const response = await fetch('/api/payments/make', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add authorization header if you have JWT authentication
+        // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(paymentData)
+    });
 
-      const response = await fetch('/api/orders/process-payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authorization header if needed
-          // 'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(orderData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setPaymentSuccess(true);
-        // Handle successful payment (redirect, show confirmation, etc.)
-        console.log('Payment successful:', result);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Payment processing failed. Please try again.');
-      }
-    } catch (err) {
-      setError('Network error. Please check your connection and try again.');
-      console.error('Payment error:', err);
-    } finally {
-      setLoading(false);
+    if (response.ok) {
+      const result = await response.json();
+      setPaymentSuccess(true);
+      console.log('Payment successful:', result);
+      
+      // Optional: Clear cart after successful payment
+      // clearCart();
+      
+    } else {
+      const errorData = await response.json();
+      setError(errorData.message || 'Payment processing failed. Please try again.');
     }
-  };
-
+  } catch (err) {
+    setError('Network error. Please check your connection and try again.');
+    console.error('Payment error:', err);
+  } finally {
+    setLoading(false);
+  }
+};
   if (paymentSuccess) {
     return (
       <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -322,15 +324,12 @@ const CheckoutPaymentSystem = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                      <select
+                      <input type="text"
                         value={shippingAddress.country}
                         onChange={(e) => setShippingAddress({...shippingAddress, country: e.target.value})}
                         className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="USA">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="UK">United Kingdom</option>
-                      </select>
+                        </input>
                     </div>
                   </div>
                 </div>
