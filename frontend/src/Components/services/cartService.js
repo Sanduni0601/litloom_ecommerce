@@ -1,6 +1,4 @@
 import api from './api';
-
-// For fallback purposes
 const DEMO_USER_ID = 2;
 
 export const addToCart = async (userId, bookId, quantity) => {
@@ -19,15 +17,13 @@ export const addToCart = async (userId, bookId, quantity) => {
 
 export const getCartItems = async () => {
   try {
-    // Get userData from localStorage
     const storedUserData = localStorage.getItem('userData');
     let userId;
     
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
-      userId = userData.userId; // Use userData.userId
+      userId = userData.userId; 
     } else {
-      // Fallback to demo user ID if no userData in localStorage
       userId = DEMO_USER_ID;
     }
     

@@ -25,18 +25,16 @@ public class CartService {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // Find the book
             Book book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new RuntimeException("Book not found"));
             
-            // Check stock
             if (book.getStockQuantity() < quantity) {
                 response.put("success", false);
                 response.put("message", "Not enough stock available");
                 return response;
             }
             
-            // Check if item already exists in cart
+
             CartItem cartItem = cartItemRepository.findByUserIdAndBookId(userId, bookId)
                     .orElseGet(() -> {
                         CartItem newItem = new CartItem();
@@ -46,8 +44,7 @@ public class CartService {
                         newItem.setQuantity(0);
                         return newItem;
                     });
-            
-            // Update quantity
+
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItemRepository.save(cartItem);
             

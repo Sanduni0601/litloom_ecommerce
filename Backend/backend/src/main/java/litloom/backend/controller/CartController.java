@@ -45,13 +45,11 @@ public class CartController {
                 .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + id));
         
         cartItem.setQuantity(cartItemDetails.getQuantity());
-        // You can update other fields as needed
         
         CartItem updatedCartItem = cartItemRepository.save(cartItem);
         return ResponseEntity.ok(updatedCartItem);
     }
 
-    // Delete a cart item
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCartItem(@PathVariable Long id) {
         return cartItemRepository.findById(id)

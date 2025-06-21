@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getCartItems } from './services/cartService'; // Import the cart service
+import { getCartItems } from './services/cartService'; 
 import Header from './Header';
 
-// Assuming you have a DEMO_USER_ID defined in your constants or environment
-const DEMO_USER_ID = 1; // Replace with your actual user ID constant
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -12,7 +10,6 @@ export default function Cart() {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  // Check if user is logged in
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
@@ -21,7 +18,6 @@ export default function Cart() {
     }
   }, []);
 
-  // Fetch cart items when component mounts
   useEffect(() => {
     fetchCartItems();
   }, []);
@@ -30,8 +26,7 @@ export default function Cart() {
     try {
       setLoading(true);
       setError(null);
-      
-      // getCartItems now handles getting the userId internally
+
       const data = await getCartItems();
       setCartItems(data);
     } catch (err) {
@@ -59,8 +54,7 @@ export default function Cart() {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to update quantity');
       }
-      
-      // Update local state
+
       setCartItems(cartItems.map(item => 
         item.id === id ? { ...item, quantity: newQuantity } : item
       ));
@@ -80,7 +74,6 @@ export default function Cart() {
         throw new Error(errorData.error || 'Failed to remove item');
       }
       
-      // Update local state
       setCartItems(cartItems.filter(item => item.id !== id));
     } catch (err) {
       setError(err.message);
