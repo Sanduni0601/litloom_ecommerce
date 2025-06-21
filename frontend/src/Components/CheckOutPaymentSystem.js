@@ -131,28 +131,24 @@ const CheckoutPaymentSystem = () => {
   setError('');
 
   try {
-    // Prepare payment data matching your Spring Boot Payment entity structure
     const paymentData = {
       user: {
-        id: userData?.userId || 1 // Use the logged-in user's ID
+        id: userData?.userId || 1 
       },
       address: shippingAddress.street,
       city: shippingAddress.city,
       zipcode: parseInt(shippingAddress.zipCode),
       country: shippingAddress.country,
-      cdno: parseInt(paymentInfo.cardNumber.replace(/\s/g, '')), // Remove spaces from card number
+      cdno: parseInt(paymentInfo.cardNumber.replace(/\s/g, '')), 
       expired: paymentInfo.expiryDate,
       cvv: parseInt(paymentInfo.cvv),
       holder: paymentInfo.cardName
     };
 
-    // Call your Spring Boot backend endpoint
-    const response = await fetch('/api/payments/make', {
+    const response = await fetch('http://localhost:8080/api/payments/make', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add authorization header if you have JWT authentication
-        // 'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(paymentData)
     });
@@ -162,7 +158,7 @@ const CheckoutPaymentSystem = () => {
       setPaymentSuccess(true);
       console.log('Payment successful:', result);
       
-      // Optional: Clear cart after successful payment
+
       // clearCart();
       
     } else {
@@ -186,12 +182,6 @@ const CheckoutPaymentSystem = () => {
           <div className="bg-gray-50 p-4 rounded-lg mb-6">
             <p className="text-sm text-gray-600">Order Total: <span className="font-bold text-lg">${total.toFixed(2)}</span></p>
           </div>
-          <button 
-            onClick={() => window.location.href = '/orders'}
-            className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-colors font-medium"
-          >
-            View Order Status
-          </button>
         </div>
       </div>
     );
@@ -440,10 +430,7 @@ const CheckoutPaymentSystem = () => {
 
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-lg p-6 sticky top-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center">
-              <ShoppingCart className="w-5 h-5 mr-2" />
-              Order Summary
-            </h3>
+            
             
             <div className="space-y-3 mb-4">
               {cartItems.map((item) => (
