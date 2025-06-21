@@ -58,5 +58,9 @@ public class CartService {
             return response;
         }
     }
+
+    public void deleteCartByUserId(Long userId) {
+        cartItemRepository.deleteByUserId(userId);
+    }
 }
 

@@ -59,5 +59,11 @@ public class CartController {
                 })
                 .orElseThrow(() -> new RuntimeException("Cart item not found with id: " + id));
     }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteCartItemsByUserId(@PathVariable Long userId) {
+        cartService.deleteCartByUserId(userId);
+        return ResponseEntity.ok("Cart items deleted for user ID: " + userId);
+    }
 }
 

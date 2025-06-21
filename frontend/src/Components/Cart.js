@@ -15,6 +15,9 @@ const navigate = useNavigate();
   const navigatetocheckout = () =>{
     navigate("/checkout");
   }
+  const browsebooks = () =>{
+    navigate("/booklist");
+  }
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
@@ -113,7 +116,7 @@ const navigate = useNavigate();
         <div className="bg-white shadow-md rounded-lg p-8 text-center">
           <p className="text-gray-500 text-lg mb-4">Your cart is empty</p>
           <button 
-            onClick={() => window.location.href = '/books'} 
+            onClick={browsebooks} 
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
             Browse Books

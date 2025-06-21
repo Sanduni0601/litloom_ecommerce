@@ -157,10 +157,12 @@ const CheckoutPaymentSystem = () => {
       const result = await response.json();
       setPaymentSuccess(true);
       console.log('Payment successful:', result);
-      
 
-      // clearCart();
-      
+      // 🧹 Clear cart for the current user
+      await fetch(`http://localhost:8080/api/cart/delete/${userData?.userId}`, {
+        method: 'DELETE',
+      });
+
     } else {
       const errorData = await response.json();
       setError(errorData.message || 'Payment processing failed. Please try again.');
@@ -172,6 +174,7 @@ const CheckoutPaymentSystem = () => {
     setLoading(false);
   }
 };
+
   if (paymentSuccess) {
     return (
       <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
